@@ -1,0 +1,5 @@
+name = Shift Cipher
+description = Moves the letters of a word left or right a certain number of characters depending on user input
+package = Other
+core = 7.x
+files[] = shift_cipher.module
