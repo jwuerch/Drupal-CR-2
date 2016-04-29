@@ -1,0 +1,5 @@
+name = Poll
+package = My First Modules
+description = Takes a poll of ice cream by state
+core = 7.x
+files[] poll.module

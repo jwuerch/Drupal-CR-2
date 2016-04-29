@@ -1,0 +1,57 @@
+<?php
+
+function poll_menu() {
+  $items = array();
+  $items['poll'] = array(
+    'title' => 'Take a poll',
+    'access callback' => TRUE,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('poll_form'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['poll_success_page'] = array(
+    'title' => 'Thank you!',
+    'access callback' => TRUE,
+    'page callback' => 'poll_success',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function poll_form() {
+  $form['ice_cream'] = array(
+      '#title' => 'Ice Cream',
+      '#type' => 'textfield',
+      '#description' => 'enter you favorite ice cream flavor',
+      '#required' => TRUE,
+  );
+  $form['state'] = array(
+      '#title' => 'State',
+      '#type' => 'select',
+      '#description' => 'select your home state',
+      '#required' => TRUE,
+      '#options' => array(
+        'California' => 'California',
+        'Washington' => 'Washington',
+        'Arizona' => 'Arizona',
+      ),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+  return $form;
+}
+
+function poll_form_submit($form, &$form_state) {
+  $ice_cream = $form_state['values']['ice_cream'];
+  $state = $form_state['values']['state'];
+  $output = "Thank you! We have you down for $ice_cream in the state of $state.";
+  $_SESSION['ice_cream_result'] = $output;
+  $form_state['redirect'] = 'poll_success_page';
+}
+
+function poll_success() {
+  return $_SESSION['ice_cream_result'];
+}

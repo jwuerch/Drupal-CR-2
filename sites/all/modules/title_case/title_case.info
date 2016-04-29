@@ -1,0 +1,5 @@
+name = Title Case
+description = capitalizes first letter of a word
+package = Other
+core = 7.x
+files[] = title_case.module

@@ -1,0 +1,5 @@
+name = Triangle Tracker
+description = determines if 3 numbers make a triangle.
+package = Other
+core = 7.x
+files[]=triangle.module

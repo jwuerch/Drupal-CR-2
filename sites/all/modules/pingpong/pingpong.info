@@ -1,0 +1,5 @@
+name = Ping Pong
+description = ping pong via input forms
+package = Other
+core = 7.x
+files[] = pingpong.module

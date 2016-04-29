@@ -1,0 +1,93 @@
+<?php
+
+function queen_attack_menu() {
+    $items = array();
+    $items['queen_attack'] = array(
+      'title' => 'Queen Attack',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('queen_attack_form'),
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queen_attack_success_page'] = array(
+      'title' => 'Results',
+      'page callback' => 'queen_attack_success',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queen_attack_form() {
+    $form['queen_x_position'] = array(
+        '#title' => 'Queen X Position',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_queen_range'),
+        '#required' =>TRUE,
+        '#description' => t("Enter the Queen's X coordinate"),
+    );
+    $form['queen_y_position'] = array(
+        '#title' => 'Queen Y Position',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_queen_range'),
+        '#required' =>TRUE,
+        '#description' => t("Enter the Queen's Y coordinate"),
+    );
+    $form['target_x_position'] = array(
+        '#title' => 'Target X Position',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_queen_range'),
+        '#required' =>TRUE,
+        '#description' => t("Enter the Target's X coordinate"),
+    );
+    $form['target_y_position'] = array(
+        '#title' => 'Target Y Position',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_queen_range'),
+        '#required' =>TRUE,
+        '#description' => t("Enter the Target's Y coordinate"),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Attack!',
+    );
+
+    return $form;
+}
+
+function queen_attack_form_validate($form, &$form_state) {
+  if ( ($form_state['values']['queen_x_position'] === $form_state['values']['target_x_position']) && ($form_state['values']['queen_y_position'] === $form_state['values']['target_y_position']) ) {
+    form_set_error('queen_y_position', 'Haha, they can\'t be on the same space!');
+    form_set_error('queen_x_position');
+    form_set_error('target_x_position');
+    form_set_error('target_y_position');
+  }
+}
+
+function element_validate_queen_range($element) {
+    if ($element['#value'] > 8 || $element['#value'] < 1) {
+        form_error($element, t('Number must be less than 9 and greater than 0.'));
+    }
+}
+
+function queen_attack_form_submit($form, &$form_state) {
+    $queen_x = $form_state['values']['queen_x_position'];
+    $queen_y = $form_state['values']['queen_y_position'];
+    $target_x = $form_state['values']['target_x_position'];
+    $target_y = $form_state['values']['target_y_position'];
+    $queen_attack_output = '';
+
+    if ($queen_x == $target_x || $queen_y == $target_y || abs($queen_x - $target_x) == abs($queen_y - $target_y)) {
+        $queen_attack_output = 'Queen attacked and destroyed target.';
+    } else {
+        $queen_attack_output = 'Queen cannot attack target.';
+    }
+
+    $_SESSION['queen_attack_output'] = $queen_attack_output;
+    $form_state['redirect'] = 'queen_attack_success_page';
+}
+
+function queen_attack_success() {
+    $output = $_SESSION['queen_attack_output'];
+    return $output;
+}

@@ -1,0 +1,64 @@
+<?php
+
+function rps_menu() {
+  $items['player_one'] = array(
+      'title' => 'Rock, Paper, Scissors',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('player_one_form'),
+      'access callback' => TRUE,
+      'type' => MENU_NORMAL_ITEM,
+  );
+  $items['rps_success_page'] = array(
+      'title' => 'Results',
+      'page callback' => 'rps_success',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function player_one_form() {
+  $form['answer'] = array(
+    '#title' => 'Choose your weapon',
+    '#type' => 'textfield',
+    '#description' => 'Select between a rock, paper, or scissors.',
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_selection'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+  return $form;
+}
+
+function element_validate_selection($element) {
+    $value = strtolower($element['#value']);
+    var_dump($value);
+    // $_SESSION['debugger'] = $value;
+    if(($value !== 'rock') && ($value !== 'paper') && ($value !== 'scissors')) {
+        form_error($element, t('You must enter either rock, paper, or scissors'));
+    }
+}
+
+function player_one_form_submit($form, &$form_state) {
+  $output = '';
+  $choices['scissors'] = 'scissors';
+  $choices['rock'] = 'rock';
+  $choices['paper'] = 'paper';
+  $p_one_choice = $form_state['values']['answer'];
+  $p_two_choice = array_rand($choices);
+  if (($p_one_choice === 'rock' && $p_two_choice === 'scissors') || ($p_one_choice === 'paper' && $p_two_choice === 'rock') || ($p_one_choice === 'scissors' && $p_two_choice === 'paper')) {
+    $output = "Congrats, you win - $p_one_choice beats $p_two_choice!";
+  } else if ($p_one_choice === $p_two_choice ) {
+      $output = "It's a tie! You both selected $p_one_choice.";
+  } else {
+    $output = "Sorry! The computer wins - $p_two_choice beats $p_one_choice.";
+  }
+  $_SESSION['rps_result'] = $output;
+  $form_state['redirect'] = 'rps_success_page';
+}
+
+function rps_success() {
+  return $_SESSION['rps_result'];
+}

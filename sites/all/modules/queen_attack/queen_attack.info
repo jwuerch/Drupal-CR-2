@@ -1,0 +1,5 @@
+name = Queen Attack
+description = 'this will determine if the Queen can take another piece'
+package = Other
+core = 7.x
+files[] = queen_attack.module
