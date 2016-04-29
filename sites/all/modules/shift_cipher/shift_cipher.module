@@ -28,7 +28,7 @@
          '#element_validate' => array('element_validate_integer_positive'),
      );
      $form['shift_direction'] = array(
-         '#title' => 'Shift direction',
+         '#title' => 'Direction',
          '#type' => 'textfield',
          '#description' => 'Enter either left or right.',
          '#required' => TRUE,
@@ -49,8 +49,15 @@
 //Validations
  function shift_cipher_form_validate($form, &$form_state) {
      $shift_direction = strtolower($form_state['values']['shift_direction']);
+     $phrase = strtolower($form_state['values']['phrase']);
      if ($shift_direction !== 'left' && $shift_direction !== 'right') {
          form_set_error('shift_direction', 'Please enter either left or right as a shift direction.');
+     }
+     $phrase = str_split($phrase);
+     foreach ($phrase as $value) {
+         if (!(preg_match("/[a-z!.,?]/", $value))) {
+             form_set_error('phrase', 'Only letters and punctuation are allowed (.?!, and spaces).');
+         }
      }
  }
 
