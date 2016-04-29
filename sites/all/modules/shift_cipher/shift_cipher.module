@@ -55,7 +55,7 @@
      }
      $phrase = str_split($phrase);
      foreach ($phrase as $value) {
-         if (!(preg_match("/[a-z!.,?]/", $value))) {
+         if (!(preg_match("/[a-z!.,?]|\s+/", $value))) {
              form_set_error('phrase', 'Only letters and punctuation are allowed (.?!, and spaces).');
          }
      }
@@ -103,6 +103,7 @@
  }
 
  function shift_cipher_results() {
+     var_dump($_SESSION['results'][1]);
      return '
      <p>You entered in the phrase "<strong>'.$_SESSION['results'][1].'</strong>" with a shift value of <strong>'.$_SESSION['results'][2].'</strong> in the <strong>'.$_SESSION['results'][3].'</strong> direction.</p>
      <p>New phrase: '.$_SESSION['results'][0].'</p>';
