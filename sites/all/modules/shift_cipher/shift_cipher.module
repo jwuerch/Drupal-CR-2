@@ -90,10 +90,13 @@
              $output .= $letter;
          }
      }
-     $_SESSION['results'] = $output;
+     $phrase = join($phrase);
+     $_SESSION['results'] = array($output, $phrase, $shift_value, $shift_direction);
      $form_state['redirect'] = 'shift_cipher_results_page';
  }
 
  function shift_cipher_results() {
-     return $_SESSION['results'];
+     return '
+     <p>You entered in the phrase "<strong>'.$_SESSION['results'][1].'</strong>" with a shift value of <strong>'.$_SESSION['results'][2].'</strong> in the <strong>'.$_SESSION['results'][3].'</strong> direction.</p>
+     <p>New phrase: '.$_SESSION['results'][0].'</p>';
  }
