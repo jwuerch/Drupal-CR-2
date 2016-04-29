@@ -17,7 +17,6 @@
      return $items;
  }
 
-
 //Shift Cipher Form
  function shift_cipher_form() {
      $form['shift_value'] = array(
@@ -92,7 +91,7 @@
              }
              else if ($ascii <= 122) {
                  $letter = chr($ascii);
-                 $output .= $letter; 
+                 $output .= $letter;
             } else {
                 $difference = $ascii - 122;
                 $difference = $difference % 26;
