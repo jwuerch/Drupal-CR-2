@@ -64,22 +64,24 @@
          $letter = strtolower($letter);
          if (preg_match("/[a-z]/", $letter) && $shift_direction === 'left') {
              $ascii = ord($letter) - $shift_value;
-             if ($ascii < 123) {
+             if ($ascii > 96) {
                  $letter = chr($ascii);
                  $output .= $letter;
             } else {
-                $difference = $ascii - 122;
-                $ascii = 140 + $difference;
+                $difference = 97 - $ascii;
+                $ascii = 123 - $difference;
+                $letter = chr($ascii);
+                $output .= $letter;
             }
          }
-         else if (preg_match("/[a-z]/", $letter) && $shift_direction === 'right') {
+         else if (preg_match("/[a-z]/", $letter)) {
              $ascii = ord($letter) + $shift_value;
              if ($ascii < 123) {
                  $letter = chr($ascii);
                  $output .= $letter;
-            } else {
+            } else if ($ascii >= 123){
                 $difference = $ascii - 122;
-                $ascii = 140 + $difference;
+                $ascii = 96 + ($ascii - 122);
                 $letter = chr($ascii);
                 $output .= $letter;
             }
