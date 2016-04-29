@@ -36,7 +36,7 @@
      $form['phrase'] = array(
          '#title' => 'Phrase',
          '#type' => 'textfield',
-         '#description' => 'Please enter a phrase that you wish to translate. Numbers and punctuation will not change.',
+         '#description' => 'Please enter a phrase that you wish to translate. Punctuation and spaces will not change.',
          '#required' => TRUE,
      );
      $form['submit'] = array(
@@ -109,7 +109,6 @@
  }
 
  function shift_cipher_results() {
-     var_dump($_SESSION['results'][1]);
      return '
      <p>You entered in the phrase "<strong>'.$_SESSION['results'][1].'</strong>" with a shift value of <strong>'.$_SESSION['results'][2].'</strong> in the <strong>'.$_SESSION['results'][3].'</strong> direction.</p>
      <p>New phrase: '.$_SESSION['results'][0].'</p>';
