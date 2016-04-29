@@ -56,18 +56,36 @@
 
  function shift_cipher_form_submit($form, &$form_state) {
      $output = '';
-     $shift_value = strtolower($form_state['values']['shift_value']);
-     $shift_direction = $form_state['values']['shift_direction'];
-     $phrase = strtolower($form_state['values']['phrase']);
+     $shift_value = $form_state['values']['shift_value'];
+     $shift_direction = strtolower($form_state['values']['shift_direction']);
+     $phrase = $form_state['values']['phrase'];
      $phrase = str_split($phrase);
      foreach ($phrase as $letter) {
-         if ((preg_match("/[a-z]/", $letter) && $shift_direction === 'left') {
-             $output .= $letter;
-         }
-         else {
-             if ((preg_match("/[a-z]/", $letter)) {
+         $letter = strtolower($letter);
+         if (preg_match("/[a-z]/", $letter) && $shift_direction === 'left') {
+             $ascii = ord($letter) - $shift_value;
+             if ($ascii < 123) {
+                 $letter = chr($ascii);
                  $output .= $letter;
-             }
+            } else {
+                $difference = $ascii - 122;
+                $ascii = 140 + $difference;
+            }
+         }
+         else if (preg_match("/[a-z]/", $letter) && $shift_direction === 'right') {
+             $ascii = ord($letter) + $shift_value;
+             if ($ascii < 123) {
+                 $letter = chr($ascii);
+                 $output .= $letter;
+            } else {
+                $difference = $ascii - 122;
+                $ascii = 140 + $difference;
+                $letter = chr($ascii);
+                $output .= $letter;
+            }
+        }
+         else {
+             $output .= $letter;
          }
      }
      $_SESSION['results'] = $output;
@@ -75,6 +93,5 @@
  }
 
  function shift_cipher_results() {
-     var_dump($_SESSION['results']);
      return $_SESSION['results'];
  }
