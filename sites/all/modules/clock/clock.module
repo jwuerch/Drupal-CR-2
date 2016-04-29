@@ -55,7 +55,6 @@ function clock_angle_form_submit($form, &$form_state) {
         $hour_degree = 0;
     }
 
-    // $_SESSION['mydebug'] = $hour_degree;
 
 
     if ($minute <= 30) {
@@ -79,7 +78,6 @@ function clock_angle_form_submit($form, &$form_state) {
     $form_state['redirect'] = 'clock_angle_success_page';
 }
 function clock_angle_success() {
-    var_dump($_SESSION['mydebug']);
     $output = $_SESSION['clock_angle_output'];
     return "Your answer is: " . $output;
 }
