@@ -69,31 +69,33 @@
      $phrase = str_split($phrase);
      foreach ($phrase as $letter) {
          $letter = strtolower($letter);
-         if (preg_match("/[a-z]/", $letter) && $shift_direction === 'left') {
+         if ((preg_match("/[a-z]/", $letter)) && ($shift_direction === 'left')) {
              $ascii = ord($letter) - $shift_value;
-             if ($ascii > 96) {
+             if (($shift_value % 26) === 0) {
+                 $output .= $letter;
+             }
+             else if ($ascii >= 97) {
                  $letter = chr($ascii);
                  $output .= $letter;
             } else {
                 $difference = 97 - $ascii;
-                if ($difference > 26) {
-                    $difference = $difference % 26;
-                }
+                $difference = ($difference % 26);
                 $ascii = 123 - $difference;
                 $letter = chr($ascii);
                 $output .= $letter;
             }
          }
-         else if (preg_match("/[a-z]/", $letter)) {
+         else if ((preg_match("/[a-z]/", $letter)) && ($shift_direction === 'right')) {
              $ascii = ord($letter) + $shift_value;
-             if ($ascii <= 122) {
+             if (($shift_value % 26) === 0) {
+                 $output .= $letter;
+             }
+             else if ($ascii <= 122) {
                  $letter = chr($ascii);
                  $output .= $letter;
             } else {
                 $difference = $ascii - 122;
-                if ($difference > 26) {
-                    $difference = $difference % 26;
-                }
+                $difference = $difference % 26;
                 $ascii = 96 + $difference;
                 $letter = chr($ascii);
                 $output .= $letter;
