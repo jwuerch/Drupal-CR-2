@@ -55,8 +55,8 @@
      }
      $phrase = str_split($phrase);
      foreach ($phrase as $value) {
-         if (!(preg_match("/[a-z!.,?]|\s+/", $value))) {
-             form_set_error('phrase', 'Only letters and punctuation are allowed (.?!, and spaces).');
+         if (!(preg_match("/[a-z!.,?-]|\s+/", $value))) {
+             form_set_error('phrase', 'The phrase must only contain letters, spaces and punctuation (.?!-, and spaces).');
          }
      }
  }
