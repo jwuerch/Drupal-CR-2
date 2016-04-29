@@ -6,10 +6,19 @@
          'access callback' => TRUE,
          'page callback' => 'drupal_get_form',
          'page arguments' => array('shift_cipher_form'),
+         'type' => MENU_NORMAL_ITEM,
+     );
+     $items['shift_cipher_results_page'] = array(
+         'title' => 'Shift Cipher Results',
+         'access callback' => TRUE,
+         'page callback' => 'shift_cipher_results',
+         'type' => MENU_CALLBACK,
      );
      return $items;
  }
 
+
+//Shift Cipher Form
  function shift_cipher_form() {
      $form['shift_value'] = array(
          '#title' => 'Shift value',
@@ -26,20 +35,34 @@
      );
      $form['phrase'] = array(
          '#title' => 'Phrase',
-         '#type' = 'textfield',
-         '#description' => 'Please enter a phrase that you wish to translate.',
+         '#type' => 'textfield',
+         '#description' => 'Please enter a phrase that you wish to translate. Numbers and punctuation will not change.',
          '#required' => TRUE,
      );
      $form['submit'] = array(
          '#type' => 'submit',
          '#value' => 'Submit',
      );
+     return $form;
  }
 
+//Validations
  function shift_cipher_form_validate($form, &$form_state) {
      $shift_direction = strtolower($form_state['values']['shift_direction']);
-     $shift_value =
-     if ($shift_direction !== 'left' || $shift_direction !== 'right') {
+     if ($shift_direction !== 'left' && $shift_direction !== 'right') {
          form_set_error('shift_direction', 'Please enter either left or right as a shift direction.');
      }
+ }
+
+ function shift_cipher_form_submit($form, &$form_state) {
+     $shift_value = strtolower($form_state['values']['shift_value']);
+     $shift_direction = $form_state['values']['shift_direction'];
+     $phrase = $form_state['values']['phrase'];
+     $output = 'test';
+     $_SESSION['results'] = $output;
+     $form_state['redirect'] = 'shift_cipher_results_page';
+ }
+
+ function shift_cipher_results() {
+     return $_SESSION['results'];
  }
