@@ -76,6 +76,9 @@
                  $output .= $letter;
             } else {
                 $difference = 97 - $ascii;
+                if ($difference > 26) {
+                    $difference = $difference % 26;
+                }
                 $ascii = 123 - $difference;
                 $letter = chr($ascii);
                 $output .= $letter;
@@ -83,12 +86,15 @@
          }
          else if (preg_match("/[a-z]/", $letter)) {
              $ascii = ord($letter) + $shift_value;
-             if ($ascii < 123) {
+             if ($ascii <= 122) {
                  $letter = chr($ascii);
                  $output .= $letter;
-            } else if ($ascii >= 123){
+            } else {
                 $difference = $ascii - 122;
-                $ascii = 96 + ($ascii - 122);
+                if ($difference > 26) {
+                    $difference = $difference % 26;
+                }
+                $ascii = 96 + $difference;
                 $letter = chr($ascii);
                 $output .= $letter;
             }
@@ -97,7 +103,7 @@
              $output .= $letter;
          }
      }
-     $phrase = join($phrase);
+     $phrase = $form_state['values']['phrase'];
      $_SESSION['results'] = array($output, $phrase, $shift_value, $shift_direction);
      $form_state['redirect'] = 'shift_cipher_results_page';
  }
