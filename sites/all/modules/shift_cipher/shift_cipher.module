@@ -1,0 +1,45 @@
+<?php
+
+ function shift_cipher_menu() {
+     $items['shift_cipher'] = array(
+         'title' => 'Shift Cipher',
+         'access callback' => TRUE,
+         'page callback' => 'drupal_get_form',
+         'page arguments' => array('shift_cipher_form'),
+     );
+     return $items;
+ }
+
+ function shift_cipher_form() {
+     $form['shift_value'] = array(
+         '#title' => 'Shift value',
+         '#type' => 'textfield',
+         '#description' => 'Enter a positive integer.',
+         '#required' => TRUE,
+         '#element_validate' => array('element_validate_integer_positive'),
+     );
+     $form['shift_direction'] = array(
+         '#title' => 'Shift direction',
+         '#type' => 'textfield',
+         '#description' => 'Enter either left or right.',
+         '#required' => TRUE,
+     );
+     $form['phrase'] = array(
+         '#title' => 'Phrase',
+         '#type' = 'textfield',
+         '#description' => 'Please enter a phrase that you wish to translate.',
+         '#required' => TRUE,
+     );
+     $form['submit'] = array(
+         '#type' => 'submit',
+         '#value' => 'Submit',
+     );
+ }
+
+ function shift_cipher_form_validate($form, &$form_state) {
+     $shift_direction = strtolower($form_state['values']['shift_direction']);
+     $shift_value =
+     if ($shift_direction !== 'left' || $shift_direction !== 'right') {
+         form_set_error('shift_direction', 'Please enter either left or right as a shift direction.');
+     }
+ }
